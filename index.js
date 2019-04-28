@@ -30,15 +30,23 @@
     id: 0,
 }
 
+// Reducer function
 function todos(state = [], action) {
-  if (action.type === 'ADD_TODO') {
-    return state.concat([action.todo])
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([action.todo])
+    case 'REMOVE_TODO':
+      return state.filter((todo) => todo.id !== action.id)
+    case 'TOGGLE_TODO':
+      return state.map((todo) => todo.id !== action.id ? todo :
+        Object.assign({}, todo, { complete: !todo.complete })
+      )
+    default:
+      return state
   }
-
-  return state
 }
 
-function createStore() {
+function createStore(reducer) {
   // The store should have four parts:
   // 1. The state
   // 2. Get the state
@@ -66,7 +74,7 @@ function createStore() {
   // responsible for updating the state
   // 4
   const dispatch = (action) => {
-    state = todos(state, action)
+    state = reducer(state, action)
     // loop over listners and invoke them
     listeners.forEach((listener) => listener())
   }
