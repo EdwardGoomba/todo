@@ -56,7 +56,7 @@
         state = reducer(state, action)
         // loop over listners and invoke them
         listeners.forEach((listener) => listener())
-        console.log('Store state is: ', state)
+        console.log('Store state is: ', store.getState())
       }
 
       // return state by calling getState when createStore is called
@@ -150,7 +150,21 @@
 
     store.subscribe(() => {
       // pass in function that will be called whenever internal state / store changes
+      const { goals, todos } = store.getState()
+      console.log('Goals: ', goals)
+      console.log('Todos: ', todos)
+
+      goals.forEach(addGoalToDOM(goal))
+      todos.forEach(addTodoToDOM(todo))
     })
+
+    function addTodoToDOM(todo) {
+
+    }
+
+    function addGoalToDOM(goal) {
+
+    }
 
     // without action creators
     // store.dispatch({
